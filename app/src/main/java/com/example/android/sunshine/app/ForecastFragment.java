@@ -36,7 +36,8 @@ import java.util.List;
 
 
 public class ForecastFragment extends Fragment {
-    ArrayAdapter<String> mForecastAdapter;
+
+    private ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
     }
@@ -102,7 +103,7 @@ public class ForecastFragment extends Fragment {
     }
 
 
-    private class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
@@ -305,6 +306,17 @@ public class ForecastFragment extends Fragment {
 
             // This will only happen if there was an error getting or parsing the forecast.
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if (result != null) {
+                mForecastAdapter.clear();
+                for(String dayForecastStr : result) {
+                    mForecastAdapter.add(dayForecastStr);
+                }
+                // New data is back from the server.  Hooray!
+            }
         }
     }
 }
